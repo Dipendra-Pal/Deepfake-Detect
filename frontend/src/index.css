@@ -1,0 +1,26 @@
+/* Global reset & base styles */
+:root {
+  font-size: 16px;
+  line-height: 1.5;
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #0d1b2a;
+  color: #e2e8f0;
+}
+
+button {
+  font-family: inherit;
+}
+
+a {
+  color: #63b3ed;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
