@@ -11,13 +11,19 @@ def extract_frames(video_path: str, max_frames: int = 10, resize: tuple = (320, 
     """Extract evenly-spaced frames from a video file.
 
     Args:
-        video_path: Absolute path to the video file.
+        video_path: Absolute path to the video file. Must reside inside the
+            system temporary directory to prevent path-traversal attacks.
         max_frames: Maximum number of frames to extract.
         resize: (width, height) to resize each frame before encoding.
 
     Returns:
         A list of dicts with keys ``index``, ``timestamp_ms``, and ``data_url``.
     """
+    # Guard: ensure the path is a normalised, absolute path inside the tmp dir.
+    real_path = os.path.realpath(video_path)
+    tmp_dir = os.path.realpath(tempfile.gettempdir())
+    if not real_path.startswith(tmp_dir + os.sep):
+        raise ValueError("Video path is outside the permitted temporary directory.")
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
         raise ValueError(f"Cannot open video file: {video_path}")

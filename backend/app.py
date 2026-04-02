@@ -73,8 +73,8 @@ def extract_frames_endpoint():
 
     try:
         frames = extract_frames(tmp_path, max_frames=max_frames)
-    except ValueError as exc:
-        return jsonify({"error": str(exc)}), 422
+    except ValueError:
+        return jsonify({"error": "Could not extract frames from the provided video."}), 422
     finally:
         os.unlink(tmp_path)
 
@@ -142,4 +142,5 @@ def _mock_prediction() -> dict:
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    debug = os.environ.get("FLASK_DEBUG", "0") == "1"
+    app.run(host="0.0.0.0", port=5000, debug=debug)
